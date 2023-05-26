@@ -1,0 +1,52 @@
+{
+	"name": "hotel-cash-flow-nodejs",
+	"version": "1.0.0",
+	"description": "To make it easy for you to get started with GitLab, here's a list of recommended next steps.",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"dev": "tsnd --respawn --transpile-only --exit-child src/server.ts",
+		"build": "tsc",
+		"start": "node ./dist/server.js",
+		"format": "pretty-quick"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://gitlab.com/weenggs-projects/hotel-cash-flow-nodejs.git"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://gitlab.com/weenggs-projects/hotel-cash-flow-nodejs/issues"
+	},
+	"homepage": "https://gitlab.com/weenggs-projects/hotel-cash-flow-nodejs#readme",
+	"devDependencies": {
+		"@types/node": "^18.16.3",
+		"husky": "^8.0.3",
+		"prettier": "^2.8.8",
+		"pretty-quick": "^3.1.3",
+		"ts-node": "^10.9.1",
+		"ts-node-dev": "^2.0.0",
+		"typescript": "^5.0.4"
+	},
+	"dependencies": {
+		"@fastify/cors": "^8.2.1",
+		"@fastify/env": "^4.2.0",
+		"@fastify/error": "^3.2.0",
+		"@fastify/jwt": "^6.7.1",
+		"@fastify/redis": "^6.1.1",
+		"@fastify/static": "^6.10.1",
+		"@fastify/swagger": "^8.3.1",
+		"@fastify/swagger-ui": "^1.8.0",
+		"@mgcrea/fastify-request-logger": "^1.1.1",
+		"@mgcrea/pino-pretty-compact": "^1.2.0",
+		"@prisma/client": "^4.13.0",
+		"fastify": "^4.17.0",
+		"fastify-plugin": "^4.5.0",
+		"fastify-zod": "^1.3.2",
+		"jwt": "^0.2.0",
+		"prisma": "^4.13.0",
+		"zod": "^3.21.4"
+	}
+}

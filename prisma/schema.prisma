@@ -1,0 +1,133 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model tbl_cash_manager {
+  id                          Int       @id @default(autoincrement()) @db.UnsignedInt
+  date                        DateTime? @db.Date
+  shift_1_amount              BigInt?
+  shift_2_amount              BigInt?
+  shift_3_before_audit_amount BigInt?
+  shift_3_after_audit_amount  BigInt?
+  bank_deposit                BigInt?
+  as_per_RRI_report           String?   @db.VarChar(50)
+  remark                      String?   @db.VarChar(50)
+  added_on                    DateTime? @default(now()) @db.Timestamp(0)
+  updated_on                  DateTime? @db.Timestamp(0)
+  cash_id                     Int?
+}
+
+model tbl_cc_bank {
+  id                   Int       @id @default(autoincrement()) @db.UnsignedInt
+  date                 DateTime? @db.Date
+  amount_as_per_shift4 BigInt?
+  amount_as_per_RRI    BigInt?
+  amount_as_per_bank   BigInt?
+  remark               String?   @db.VarChar(50)
+  actions              String?   @db.VarChar(50)
+  added_on             DateTime? @default(now()) @db.Timestamp(0)
+  updated_on           DateTime? @db.Timestamp(0)
+}
+
+model tbl_expenses {
+  id                Int                             @id @default(autoincrement()) @db.UnsignedInt
+  vendor            String?                         @db.VarChar(50)
+  service           String?                         @db.VarChar(50)
+  amount            BigInt?
+  date              DateTime?                       @db.Date
+  method_of_payment tbl_expenses_method_of_payment?
+  added_on          DateTime?                       @default(now()) @db.Timestamp(0)
+  updated_on        DateTime?                       @db.Timestamp(0)
+}
+
+model tbl_pdf_data {
+  id                                           Int       @id @default(autoincrement()) @db.UnsignedInt
+  date                                         DateTime? @db.Date
+  total_rooms                                  Int?
+  out_of_inventory_rooms                       Int?
+  available_rooms                              Int?
+  out_of_order_rooms                           Int?
+  revenue_rooms                                Int?
+  comp_rooms                                   Int?
+  zero_rate_rooms                              Int?
+  day_use_rooms                                Int?
+  total_rooms_occupied                         Int?
+  total_rooms_occ_without_day_use              Int?
+  total_rooms_left_vacant                      Int?
+  occ_percentage                               Float?    @db.Float
+  occ_percentage_plus_ooo_comps                Float?    @db.Float
+  occ_percentage_minus_ooo_comps               Float?    @db.Float
+  occ_percentage_plus_ooo_minus_comps          Float?    @db.Float
+  occ_percentage_plus_ooo_plus_comps_day_use   Float?    @db.Float
+  occ_percentage_minus_ooo_plus_comps_day_use  Float?    @db.Float
+  occ_percentage_plus_ooo_minus_comps_day_use  Float?    @db.Float
+  occ_percentage_minus_ooo_minus_comps_day_use Float?    @db.Float
+  adr_with_comps                               Int?
+  adr_without_comps                            Int?
+  average_revenue_per_room                     Int?
+  revenue_per_available_room                   Int?
+}
+
+model tbl_properties {
+  id                Int                 @id @default(autoincrement()) @db.UnsignedInt
+  property_name     String?             @db.VarChar(25)
+  property_address  String?             @db.VarChar(50)
+  property_phone    String?             @db.VarChar(12)
+  added_on          DateTime?           @default(now()) @db.Timestamp(0)
+  updated_on        DateTime?           @db.Timestamp(0)
+  tbl_user_property tbl_user_property[]
+}
+
+model tbl_recurring_expenses {
+  id                Int       @id @default(autoincrement()) @db.UnsignedInt
+  vendor            String?   @db.VarChar(50)
+  service           String?   @db.VarChar(50)
+  due_date          DateTime? @db.Date
+  method_of_payment String?   @db.VarChar(50)
+  added_on          DateTime? @default(now()) @db.Timestamp(0)
+  updated_on        DateTime? @db.Timestamp(0)
+}
+
+model tbl_user_property {
+  id             Int            @id @default(autoincrement()) @db.UnsignedInt
+  user_id        Int            @db.UnsignedInt
+  property_id    Int            @db.UnsignedInt
+  added_on       DateTime?      @default(now()) @db.Timestamp(0)
+  tbl_users      tbl_users      @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "tbl_user_property_ibfk_1")
+  tbl_properties tbl_properties @relation(fields: [property_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "tbl_user_property_ibfk_2")
+
+  @@index([property_id], map: "property_id")
+  @@index([user_id], map: "user_id")
+}
+
+model tbl_user_roles {
+  id         Int       @id @default(autoincrement()) @db.UnsignedInt
+  role_name  String?   @db.VarChar(25)
+  added_on   DateTime? @default(now()) @db.Timestamp(0)
+  updated_on DateTime? @db.Timestamp(0)
+}
+
+model tbl_users {
+  id                Int                 @id @default(autoincrement()) @db.UnsignedInt
+  role_id           Int                 @db.UnsignedInt
+  username          String?             @db.VarChar(25)
+  fullname          String?             @db.VarChar(50)
+  email             String?             @db.VarChar(50)
+  password          String?             @db.VarChar(256)
+  phone_no          String?             @db.VarChar(12)
+  added_on          DateTime?           @default(now()) @db.Timestamp(0)
+  updated_on        DateTime?           @db.Timestamp(0)
+  tbl_user_property tbl_user_property[]
+}
+
+enum tbl_expenses_method_of_payment {
+  Auto_Bank       @map("Auto-Bank")
+  Auto_CC         @map("Auto-CC")
+  CC__to_schedule @map("CC- to schedule")
+  Check
+}
